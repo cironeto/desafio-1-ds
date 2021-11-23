@@ -1,5 +1,7 @@
 package dev.cironeto.desafio1ds.dto;
 
+import dev.cironeto.desafio1ds.entity.Client;
+
 import java.time.Instant;
 import java.io.Serializable;
 
@@ -21,5 +23,14 @@ public class ClientDto implements Serializable{
         this.income = income;
         this.birthDate = birthDate;
         this.children = children;
+    }
+
+    public ClientDto(Client client){
+        this.id = client.getId();
+        this.name = client.getName();
+        this.cpf = client.getCpf();
+        this.income = client.getIncome();
+        this.birthDate = client.getBirthDate();
+        this.children = client.getChildren();
     }
 }
