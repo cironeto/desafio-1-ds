@@ -3,8 +3,11 @@ package dev.cironeto.desafio1ds.service;
 import dev.cironeto.desafio1ds.dto.ClientDto;
 import dev.cironeto.desafio1ds.entity.Client;
 import dev.cironeto.desafio1ds.repository.ClientRepository;
+import dev.cironeto.desafio1ds.service.exception.DatabaseException;
 import dev.cironeto.desafio1ds.service.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -53,10 +56,16 @@ public class ClientService {
         }
     }
 
-
-
-
-
+    @Transactional
+    public void delete(Long id) {
+        try{
+            clientRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException("ID not found");
+        }catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Integrity violation. Cannot delete this product");
+        }
+    }
 
 
     private void copyDtoToEntity(ClientDto dto, Client entity){
@@ -66,5 +75,4 @@ public class ClientService {
         entity.setBirthDate(dto.getBirthDate());
         entity.setChildren(dto.getChildren());
     }
-
 }
