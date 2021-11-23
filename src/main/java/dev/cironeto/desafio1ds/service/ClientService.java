@@ -28,6 +28,7 @@ public class ClientService {
     @Transactional(readOnly = true)
     public ClientDto findById(Long id) {
         Optional<Client> obj = clientRepository.findById(id);
-        Client entity = obj.orElseThro()
+        Client entity = obj.orElseThrow();
+        return new ClientDto(entity);
     }
 }
